@@ -12,6 +12,7 @@ class User(db.Model):
     email = db.Column(db.String(128), nullable=False)
     password = db.Column(db.String(256), nullable=False)
     salt = db.Column(db.String(50), nullable=False)
+    type = db.Column(db.String(2), nullable=False)
     token = db.Column(db.String(300))
     expireAt = db.Column(db.DateTime)
     createdAt = db.Column(db.DateTime, default=datetime.now())
