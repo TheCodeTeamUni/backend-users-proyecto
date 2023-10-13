@@ -1,47 +1,49 @@
 name: Auto merge feature to develop
 
 on:
- push:
-  branches:
-    - 'HU**'
+  push:
+    branches:
+      - "HU**"
 
 jobs:
-
   FusionarRamas:
     if: ${{ contains(github.event.head_commit.message, 'merge') }}
     name: FusionarRamas
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
     steps:
+      - name: Merge develop to feature
+        uses: tukasz/direct-merge-action@v2.0.2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: develop
+          target-branch: ${{ github.ref }}
 
-    - name: Merge develop to feature
-      uses: tukasz/direct-merge-action@v2.0.2
-      with: 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        source-branch: develop
-        target-branch: ${{ github.ref }}
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
 
-    - name: Checkout de repositorio
-      uses: actions/checkout@v2
+      - name: Configuración de entorno de python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9.8"
 
-    - name: Configuración de entorno de python
-      uses: actions/setup-python@v2
-      with:
-          python-version: '3.9.8'
+      - name: Instalación de librerías y dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Instalación de librerías y dependencias
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Correr pruebas
+        id: correr-pruebas
+        run: python -m unittest discover -s tests -v
 
-    - name: Correr pruebas
-      id: correr-pruebas
-      run: python -m unittest discover -s tests -v 
-
-    - name: Cálculo de cubrimiento
-      id: cubrimiento
-      run: |
+      - name: Cálculo de cubrimiento
+        id: cubrimiento
+        run: |
           coverage run -m unittest discover -s tests -v 
-          coverage report --fail-under=80  
+          coverage report --fail-under=80
 
   Automerge:
     name: Automerge
