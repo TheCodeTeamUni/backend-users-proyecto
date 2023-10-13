@@ -7,13 +7,6 @@ from ..utils import encrypt, validate_password
 user_schema = UserSchema()
 
 
-class ViewUsers(Resource):
-
-    def get(self):
-        # Retorna todos los usuarios registrados: /users/all
-        return [user_schema.dump(user) for user in User.query.all()]
-
-
 class VistaSignUp(Resource):
 
     def post(self):
@@ -40,11 +33,8 @@ class VistaSignUp(Resource):
 
                 return {'mensaje': 'No puede tener campos vacios'}, 400
 
-            if user_username is not None:
-                return {'mensaje': 'Nombre de usuario ya existe'}, 400
-
-            if user_email is not None:
-                return {'mensaje': 'Correo electronico ya existe'}, 400
+            if user_username is not None or user_email is not None:
+                return {'mensaje': 'Usuario ya existe'}, 400
 
             if not validate_password(user_pass):
                 return {'mensaje': 'La contraseña no cumple los requisitos'}, 400
@@ -65,6 +55,13 @@ class VistaSignUp(Resource):
 
         except Exception as e:
             return {'mensaje': 'A ocurrido un error, por favor vuelve a intentar', 'error': str(e)}, 503
+
+
+class ViewUsers(Resource):
+
+    def get(self):
+        # Retorna todos los usuarios registrados: /users/all
+        return [user_schema.dump(user) for user in User.query.all()]
 
 
 class VistaPong(Resource):
