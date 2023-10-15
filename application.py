@@ -22,7 +22,6 @@ jwt = JWTManager(application)
 
 @application.errorhandler(404)
 def page_not_found(e):
-    # your processing here
     return 'Pagina no encontrada', 404
 
 if __name__ == "__main__":
