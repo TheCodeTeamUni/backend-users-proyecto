@@ -10,3 +10,10 @@
 ## Create image users
 1. Create image users: `docker build -t users_app .`
 2. Create and run container: `docker run -d -p 3001:3001 -e DATABASE_URL=postgresql://postgres:admin@host.docker.internal:5432/postgres users_app`
+
+## Run Unittest
+1. To run all test: `python -m unittest discover -s test -v`
+2. To run a specify test: `python -m unittest test/test_signup.py`
+3. To test coverage: `python -m coverage run -m unittest` or `coverage run -m unittest tests/test_signup.py -v`
+4. To test coverage report in console: `python -m coverage report`
+5. To a test coverage report more detail in html format: `python -m coverage html`
