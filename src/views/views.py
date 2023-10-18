@@ -143,7 +143,7 @@ class VistaUser(Resource):
 
 class VistaValidateEmail(Resource):
 
-    def get(self):
+    def post(self):
         try:
             user_email = User.query.filter(
                 User.email == request.json['email']).first()
