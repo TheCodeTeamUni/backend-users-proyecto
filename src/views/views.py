@@ -101,7 +101,7 @@ class VistaLogin(Resource):
             usuario.expireAt = expireAt
             db.session.commit()
 
-            return {'id': usuario.id, 'token': token_de_acceso, 'expireAt': expireAt.isoformat(timespec='seconds')}, 200
+            return {'id': usuario.id, 'token': token_de_acceso, 'type': usuario.type}, 200
 
         except Exception as e:
             return {'mensaje': 'A ocurrido un error, por favor vuelve a intentar', 'error': str(e)}, 503
@@ -139,6 +139,23 @@ class VistaUser(Resource):
 
         except Exception as e:
             return {'mensaje': 'Por favor ingresar un token valido'}, 401
+
+
+class VistaValidateEmail(Resource):
+
+    def get(self):
+        try:
+            user_email = User.query.filter(
+                User.email == request.json['email']).first()
+            
+            if user_email is not None:
+                return {'mensaje': 'Usuario ya existe'}, 400
+            
+            else:
+                return {'mensaje': 'Usuario no existe'}, 200
+
+        except Exception as e:
+            return {'mensaje': 'A ocurrido un error, por favor vuelve a intentar', 'error': str(e)}, 503
 
 
 class VistaPong(Resource):

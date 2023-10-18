@@ -106,3 +106,39 @@ class TestUsuario(TestCase):
                                  headers=headers_token)
 
         self.assertEqual(sol_me.status_code, 400)
+
+    def test_valida_email_success(self):
+
+        endpoint_validate = "/users/validate"
+        headers = {'Content-Type': 'application/json'}
+
+        sol_validate = self.client.get(endpoint_validate,
+                                       data=json.dumps(
+                                           {"email": self.user_email}),
+                                       headers=headers)
+
+        respuestaValidate = json.loads(sol_validate.get_data())
+
+        self.assertEqual(sol_validate.status_code, 400)
+        self.assertEqual(respuestaValidate["mensaje"], "Usuario ya existe")
+
+    def test_valida_email_fail(self):
+
+        endpoint_validate = "/users/validate"
+        headers = {'Content-Type': 'application/json'}
+
+        sol_validate = self.client.get(endpoint_validate,
+                                       data=json.dumps({"email": "email.com"}), headers=headers)
+
+        respuestaValidate = json.loads(sol_validate.get_data())
+
+        self.assertEqual(sol_validate.status_code, 200)
+        self.assertEqual(respuestaValidate["mensaje"], "Usuario no existe")
+
+    def test_valida_email_error(self):
+        endpoint_validate = "/users/validate"
+        headers = {'Content-Type': 'application/json'}
+
+        sol_validate = self.client.get(endpoint_validate, headers=headers)
+
+        self.assertEqual(sol_validate.status_code, 503)

@@ -28,3 +28,4 @@ class UserSchema(SQLAlchemySchema):
     id = fields.Integer()
     username = fields.String()
     email = fields.String()
+    type = fields.String()
