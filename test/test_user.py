@@ -112,7 +112,7 @@ class TestUsuario(TestCase):
         endpoint_validate = "/users/validate"
         headers = {'Content-Type': 'application/json'}
 
-        sol_validate = self.client.get(endpoint_validate,
+        sol_validate = self.client.post(endpoint_validate,
                                        data=json.dumps(
                                            {"email": self.user_email}),
                                        headers=headers)
@@ -127,7 +127,7 @@ class TestUsuario(TestCase):
         endpoint_validate = "/users/validate"
         headers = {'Content-Type': 'application/json'}
 
-        sol_validate = self.client.get(endpoint_validate,
+        sol_validate = self.client.post(endpoint_validate,
                                        data=json.dumps({"email": "email.com"}), headers=headers)
 
         respuestaValidate = json.loads(sol_validate.get_data())
@@ -139,6 +139,6 @@ class TestUsuario(TestCase):
         endpoint_validate = "/users/validate"
         headers = {'Content-Type': 'application/json'}
 
-        sol_validate = self.client.get(endpoint_validate, headers=headers)
+        sol_validate = self.client.post(endpoint_validate, headers=headers)
 
         self.assertEqual(sol_validate.status_code, 503)
