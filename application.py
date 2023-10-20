@@ -1,4 +1,5 @@
 from src import create_app
+from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from src.models import db
@@ -10,6 +11,8 @@ app_context.push()
 
 db.init_app(application)
 db.create_all()
+
+cors = CORS(application)
 
 api = Api(application)
 api.add_resource(ViewUsers, '/users/all')
@@ -26,4 +29,4 @@ def page_not_found(e):
     return 'Pagina no encontrada', 404
 
 if __name__ == "__main__":
-    application.run(host = "0.0.0.0", port = 3001, debug = True)
+    application.run(host="0.0.0.0", port=3001, debug=True)
