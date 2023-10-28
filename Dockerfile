@@ -5,7 +5,7 @@ FROM public.ecr.aws/docker/library/python:3.9-slim-buster
 WORKDIR /app
 
 # Set enviroment variables
-ENV DATABASE_URL default
+ENV DATABASE_URL_USER default
 
 # Install pip requirements
 RUN pip install --upgrade pip
